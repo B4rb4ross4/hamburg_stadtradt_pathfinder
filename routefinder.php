@@ -18,10 +18,30 @@ foreach($way_matrix As $key => $relation)
   $sorted_matrix[$relation['a']['lat'] . '##' . $relation['a']['lng']][] = $relation;
 }
 
+function findOptimalPath(array $from, array $to, array &$way_matrix, array $path, int $depth = 5) {
 
-function findOptimalPath($a, $b, &$way_matrix, $depth = 5) {
+  $maxTime = null;
 
-  foreach($way_matrix[$a['lat'] . '##' . $a['lng']] As $relation) {
+  foreach ($way_matrix[$from['lat'] . '##' . $from['lng']] As $possibleRoute)
+  {
+    if(($possibleRoute['b']['lat'] == $to['lat']) && ($possibleRoute['b']['lng'] == $to['lng']))
+    {
+      $maxTime = $possibleRoute['route']['time'];
+      break;
+    }
+  }
 
+  # do something if maxTime < 30 minutes!
+  foreach ($way_matrix[$from['lat'] . '##' . $from['lng']] As $possibleRoute)
+  {
+    if(in_array($possibleRoute['b']['lat'] . '##' . $possibleRoute['b']['lng'], $path)) {
+      continue;
+    }
+
+    if($possibleRoute['route']['time'] >= $maxTime) {
+      continue;
+    }
+
+    # get route from current node
   }
 }
